@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  back-end:
+    build: ./back-end
+    expose:
+      - "5252"
+    deploy:
+      replicas: 2   # 👈 هذا أهم سطر
+
+  front-end:
+    build: ./front-end
+    expose:
+      - "9000"
+    depends_on:
+      - back-end
+
+  proxy:
+    build: ./proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - front-end
+      - back-end
